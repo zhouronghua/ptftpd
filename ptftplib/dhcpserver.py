@@ -35,6 +35,7 @@ import socket
 import struct
 import sys
 import time
+import six
 
 from . import notify
 
@@ -245,7 +246,7 @@ class DHCPServer(object):
         while True:
             data = self.sock.recv(4096)
             try:
-                pkt = DhcpPacket(data)
+                pkt = DhcpPacket(six.ensure_str(data, errors='ignore'))
                 self.handle_dhcp_request(pkt)
             except (NotDhcpPacketError, UninterestingDhcpPacket):
                 continue
